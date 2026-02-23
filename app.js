@@ -5,17 +5,26 @@ const server= http.createServer((req,res)=>{
    const method=req.method
     if(req.url==='/')
     {  
-        res.setHeader('Content-Type','text/html')
+         fs.readFile('FormValue.txt', (err, data) => {
 
-        res.end(
-            `
-            <form action="/message" method="POST">
-            <label>Name:</label>
-            <input type="text" name="username"></input>
-            <button type="submit">Add</button> 
-            </form>
-            `
-        );
+            let username = '';
+
+            if (!err) {
+                username = data.toString();
+            }
+
+            res.setHeader('Content-Type', 'text/html');
+
+            res.end(`
+                <h2>Entered Name: ${username}</h2>
+
+                <form action="/message" method="POST">
+                    <label>Name:</label>
+                    <input type="text" name="username">
+                    <button type="submit">Add</button>
+                </form>
+            `);
+        });
     }else{
         if(url === '/message' && method === 'POST'){
             res.setHeader('Content-type','text/html');
